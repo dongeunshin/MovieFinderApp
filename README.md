@@ -8,4 +8,5 @@
 - 영화를 검색하면 TableView로 검색 결과를 제공한다.
 
 ### Skills
+- IOS
 - URLSession
