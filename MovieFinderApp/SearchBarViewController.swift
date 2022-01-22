@@ -6,10 +6,9 @@
 //
 
 import UIKit
+import Kingfisher
 
 class SearchBarViewController: UIViewController {
-
-    var personData: [MovieData] = []
     
     let defaultHeight: CGFloat = 100
     var containerViewHeightConstraint: NSLayoutConstraint?
@@ -27,8 +26,6 @@ class SearchBarViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .black
         view.alpha = 0.6
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(close(_:)))
-//        view.addGestureRecognizer(tap)
         return view
     }()
     
@@ -63,16 +60,21 @@ class SearchBarViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: MovieTableViewCell.identifier)
         tableView.rowHeight = 100
+        tableView.keyboardDismissMode = .onDrag //스크롤시 키보드 내리기
         return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContraints()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(close(_:)))
-        dimmedView.addGestureRecognizer(tap) // 왜 viewDidLoad에서만 되냐? dimmedView안에서는 안뎀..
+        let tapDimmedview = UITapGestureRecognizer(target: self, action: #selector(close(_:)))
+        dimmedView.addGestureRecognizer(tapDimmedview) // 왜 viewDidLoad에서만 되냐? dimmedView안에서는 안뎀..
+//        movieTableView.keyboardDismissMode = .onDrag   // UISwipeGestureRecognizer로는 못하나?
     }
-    
+    @objc private func touchesTableView(_ sender: UISwipeGestureRecognizer){
+         print("SWIPE!!!!!!!")
+         self.view.endEditing(true)
+   }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animatePresentContainer()
@@ -144,21 +146,16 @@ class SearchBarViewController: UIViewController {
     
     @objc func textFieldDidChange(_ sender: Any?) {
 //        self.containerViewHeightConstraint?.constant = self.view.bounds.height
-        makeData()
         configure()
         addViews()
         autoLayout()
-    }
-    
-    func makeData() {
-        for _ in 0...1 {
-            personData.append(MovieData.init(
-                personImage: UIImage(systemName: "heart.fill")!,
-                movieNameLabel: "",
-                personAge: 20
-            ))
+        let quaryValue = searchTextField.text
+        dataManager.shared.fetch(queryValue: quaryValue!) {
+            self.movieTableView.reloadData()
+            print("reload in Home")
         }
     }
+    
     func configure() {
         movieTableView.dataSource = self
         movieTableView.delegate = self
@@ -182,20 +179,35 @@ class SearchBarViewController: UIViewController {
 extension SearchBarViewController : UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.containerViewHeightConstraint?.constant = 100 * CGFloat(personData.count + 1) //왜 1 더해야하지?
-//        print(personData.count)
-        return personData.count
+        let cnt = dataManager.shared.movieList.count
+        if 100 * CGFloat(cnt + 1) > self.view.bounds.height {
+            self.containerViewHeightConstraint?.constant = self.view.frame.height
+        }else {
+            self.containerViewHeightConstraint?.constant = 100 * CGFloat(cnt + 1) //왜 1 더해야하지?
+        }
+        return cnt
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieTableViewCell.identifier, for: indexPath) as? MovieTableViewCell else { return UITableViewCell() }
-        cell.movieImage.image = personData[indexPath.row].personImage ?? UIImage(named: "default")
-        cell.movieNameLabel.text = "table view test"
-        cell.personAge.text = String(personData[indexPath.row].personAge)
+        let target = dataManager.shared.movieList[indexPath.row]
+        if let imageURL = URL(string: target.image) {
+            cell.movieImage.kf.setImage(with: imageURL)
+        }
+        cell.movieNameLabel.text = target.title
+        cell.actorLabel.text = target.director
         return cell
     }
 }
 
 extension SearchBarViewController: UITableViewDelegate {
-
 }
+
+// 1. Indicator view 
+// 2. search bar - 검색어 감당하는 것 -> 비동기적으로? / 테이블 뷰 길이 동적으로
+// 3. detail view - webview
+// 4. almofire
+// 5. kingfisher
+// 6. 탭바로 구성?
+
+//11번까지

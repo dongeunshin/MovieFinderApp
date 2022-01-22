@@ -26,7 +26,6 @@ class dataManager {
             self.fetchMovie(queryValue: queryValue) { (result) in
                 switch result {
                 case .success(let data):
-//                    debugPrint(data)
                     if let decodedData = data as? MovieModel {
                         self.movieList = decodedData.items
                     }

@@ -68,5 +68,4 @@ class MovieCollectionViewCell: UICollectionViewCell {
             ratingLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
-    
 }

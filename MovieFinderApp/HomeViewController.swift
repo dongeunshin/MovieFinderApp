@@ -59,9 +59,6 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailViewController()
         vc.indexpath = indexPath
@@ -75,7 +72,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.identifier, for: indexPath) as! MovieCollectionViewCell
       
       let target = dataManager.shared.movieList[indexPath.row]
-      
       if let imageURL = URL(string: target.image) {
           cell.imageView.kf.setImage(with: imageURL)
       }

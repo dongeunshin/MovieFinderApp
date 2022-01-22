@@ -23,7 +23,7 @@ class MovieTableViewCell: UITableViewCell {
         return label
     }()
     
-    let personAge: UILabel = {
+    let actorLabel: UILabel = {
         let personAge = UILabel()
         personAge.translatesAutoresizingMaskIntoConstraints = false
         return personAge
@@ -39,7 +39,7 @@ class MovieTableViewCell: UITableViewCell {
     private func addContentView() {
         contentView.addSubview(movieImage)
         contentView.addSubview(movieNameLabel)
-        contentView.addSubview(personAge)
+        contentView.addSubview(actorLabel)
     }
     
     private func setConstraints() {
@@ -54,11 +54,11 @@ class MovieTableViewCell: UITableViewCell {
             movieNameLabel.leadingAnchor.constraint(equalTo: movieImage.trailingAnchor, constant: margin),
             movieNameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            personAge.topAnchor.constraint(equalTo: movieNameLabel.bottomAnchor),
-            personAge.leadingAnchor.constraint(equalTo: movieImage.trailingAnchor, constant: margin),
-            personAge.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            personAge.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            personAge.heightAnchor.constraint(equalTo: movieNameLabel.heightAnchor),
+            actorLabel.topAnchor.constraint(equalTo: movieNameLabel.bottomAnchor),
+            actorLabel.leadingAnchor.constraint(equalTo: movieImage.trailingAnchor, constant: margin),
+            actorLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            actorLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            actorLabel.heightAnchor.constraint(equalTo: movieNameLabel.heightAnchor),
             ])
     }
     

@@ -25,7 +25,6 @@ class MovieDetailViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(titleLabel)
-
         
         let safeArea = view.safeAreaLayoutGuide
         
