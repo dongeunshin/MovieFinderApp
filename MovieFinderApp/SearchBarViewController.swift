@@ -111,7 +111,6 @@ class SearchBarViewController: UIViewController {
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: defaultHeight)
         containerViewHeightConstraint?.isActive = true
         containerViewBottomConstraint?.isActive = true
-        
     }
     
     func animatePresentContainer() {
@@ -203,11 +202,3 @@ extension SearchBarViewController : UITableViewDataSource {
 extension SearchBarViewController: UITableViewDelegate {
 }
 
-// 1. Indicator view 
-// 2. search bar - 검색어 감당하는 것 -> 비동기적으로? / 테이블 뷰 길이 동적으로
-// 3. detail view - webview
-// 4. almofire
-// 5. kingfisher
-// 6. 탭바로 구성?
-
-//11번까지
